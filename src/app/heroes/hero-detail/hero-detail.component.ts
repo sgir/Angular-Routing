@@ -14,9 +14,12 @@ export class HeroDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private service: HeroService ) { }
 
   ngOnInit() {
+
+    // paramMap observable manages component instace (reuse, destroy) according to Router's needs
     this.hero$ = this.route.paramMap.pipe(
+      // use the swithMap to flatten the obeservable
       switchMap( (params: ParamMap) =>
-        this.service.getHero(params.get(`id`))
+        this.service.getHero(params.get(`id`)) // use the id token value from the route path change to get the correct Hero
   );
   }
 
