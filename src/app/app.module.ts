@@ -14,14 +14,13 @@ import { HeroesModule } from './heroes/heroes.module';
   declarations: [
     AppComponent,
     CrisisListComponent,
-    HeroListComponent,
     PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule,
-    HeroesModule
+    HeroesModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
