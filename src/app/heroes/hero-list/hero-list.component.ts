@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import {Observable} from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hero-list',
@@ -10,26 +13,22 @@ import { HeroService } from '../hero.service';
 })
 export class HeroListComponent implements OnInit {
 
-  selectedHero: Hero;
+  heroes$: Observable<Hero[]>;
+  selectedId: number;
 
-  heroes: Hero[];
-
-  constructor(private heroService: HeroService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private service: HeroService) {
+  }
 
   ngOnInit() {
-    this.getHeroes();
-  }
-
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-  }
-
-  getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
+    this.heroes$ = this.route.paramMap.pipe(
+      switchMap((params => {
+          // (+) before `params.get()` turns the string into a number
+          this.selectedId = +params.get('id');
+          return this.service.getHeroes();
+        })
+      ));
   }
 }
-
 
 /*
 Copyright 2017-2018 Google Inc. All Rights Reserved.
